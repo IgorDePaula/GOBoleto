@@ -46,5 +46,5 @@ const NUMERO = "341"
 // $campo = $this->getNumero() . $this->boleto->getMoeda() . $this->boleto->getCarteira() . substr($this->boleto->getNossoNumero(), 0, 2);
 
 func (Itau)Campo1 (Boleto boleto) string{
-	return NUMERO+boleto.Moeda+boleto.Carteira+boleto.NossoNumero[0:2]
+	return NUMERO + boleto.Moeda + boleto.Carteira + boleto.NossoNumero[0:2]
 }
