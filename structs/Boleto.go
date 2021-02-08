@@ -5,8 +5,10 @@ import "time"
 type Boleto struct {
 	Beneficiario Beneficiario
 	Banco Banco
+	Carteira string
 	NomePagador string
 	Aceite string
+	NossoNumero string
 	NumeroDocumento string
 	DataProcessamento time.Time
 	DataVencimento time.Time

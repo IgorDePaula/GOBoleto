@@ -1,5 +1,8 @@
 package processa
-import "github.com/IgorDePaula/GOBoleto/structs/Boleto"
+
+import (
+	"github.com/IgorDePaula/GOBoleto/structs"
+)
 type Itau struct{
 
 }
@@ -45,6 +48,6 @@ const NUMERO = "341"
 } */
 // $campo = $this->getNumero() . $this->boleto->getMoeda() . $this->boleto->getCarteira() . substr($this->boleto->getNossoNumero(), 0, 2);
 
-func (Itau)Campo1 (Boleto boleto) string{
+func (Itau)Campo1 (boleto structs.Boleto) string{
 	return NUMERO + boleto.Moeda + boleto.Carteira + boleto.NossoNumero[0:2]
 }
