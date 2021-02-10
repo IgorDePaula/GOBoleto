@@ -1,7 +1,5 @@
 package structs
 
-import "time"
-
 type Boleto struct {
 	Beneficiario Beneficiario
 	Banco Banco
@@ -10,8 +8,8 @@ type Boleto struct {
 	Aceite string
 	NossoNumero string
 	NumeroDocumento string
-	DataProcessamento time.Time
-	DataVencimento time.Time
+	DataProcessamento Date
+	DataVencimento Date
 	LocalPagamento string
 	LocalPagamento2 string
 	Instrucao1 string

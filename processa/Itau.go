@@ -1,7 +1,7 @@
 package processa
 
 import (
-	"../structs"
+	"github.com/IgorDePaula/GOBoleto/structs"
 	"time"
 )
 type Itau struct{
@@ -49,10 +49,10 @@ const NUMERO = "341"
 } */
 // $campo = $this->getNumero() . $this->boleto->getMoeda() . $this->boleto->getCarteira() . substr($this->boleto->getNossoNumero(), 0, 2);
 
-func (Itau)Campo1 (boleto structs.Boleto) string{
+/*func (Itau)Campo1 (boleto structs.Boleto) string{
 	return NUMERO + boleto.Moeda + boleto.Carteira + boleto.NossoNumero[0:2]
 }
-
+*/
 func (itau Itau) FatorVencimento() int {
 	database := ToDate(1997, 10, 7)
 	maturity := ToDate(itau.Boleto.DataVencimento.Ano,itau.Boleto.DataVencimento.Mes , itau.Boleto.DataVencimento.Dia)
