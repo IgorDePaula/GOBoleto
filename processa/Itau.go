@@ -2,9 +2,10 @@ package processa
 
 import (
 	"github.com/IgorDePaula/GOBoleto/structs"
+	"time"
 )
 type Itau struct{
-
+	Boleto structs.Boleto
 }
 const NUMERO = "341"
 /**func DvNossoNumero(campo) int {
@@ -50,4 +51,16 @@ const NUMERO = "341"
 
 func (Itau)Campo1 (boleto structs.Boleto) string{
 	return NUMERO + boleto.Moeda + boleto.Carteira + boleto.NossoNumero[0:2]
+}
+
+func (itau Itau) FatorVencimento() int {
+	database := ToDate(1997, 10, 7)
+	maturity := ToDate(itau.Boleto.DataVencimento.Ano,itau.Boleto.DataVencimento.Mes , itau.Boleto.DataVencimento.Dia)
+
+	result := maturity.Sub(database).Hours() / 24
+return result
+}
+
+func ToDate(year, month, day int) time.Time {
+	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
 }
