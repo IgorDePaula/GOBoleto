@@ -1,7 +1,7 @@
 package processa
 
 import (
-	"github.com/IgorDePaula/GOBoleto/structs"
+	"../structs"
 	"time"
 )
 type Itau struct{
@@ -58,7 +58,7 @@ func (itau Itau) FatorVencimento() int {
 	maturity := ToDate(itau.Boleto.DataVencimento.Ano,itau.Boleto.DataVencimento.Mes , itau.Boleto.DataVencimento.Dia)
 
 	result := maturity.Sub(database).Hours() / 24
-return result
+return int(result)
 }
 
 func ToDate(year, month, day int) time.Time {
