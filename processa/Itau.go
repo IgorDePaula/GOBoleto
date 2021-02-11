@@ -1,66 +1,78 @@
 package processa
 
 import (
+	"fmt"
 	"github.com/IgorDePaula/GOBoleto/structs"
+	"strconv"
+	"strings"
 	"time"
 )
-type Itau struct{
+
+type Itau struct {
 	Boleto structs.Boleto
 }
+
 const NUMERO = "341"
-/**func DvNossoNumero(campo) int {
-	var multiplicador = 2;
-	var multiplicacao = 0;
-	soma_campo := 0;
-	for i := len(campo); i>0; i-- {
-		multiplicacao = campo[i-1:1] * multiplicador;
-		if multiplicacao >= 10 {
-			multiplicacao = multiplicacao[0:1] + multiplicacao[1:1]
-		}
-		soma_campo += multiplicacao
-		multiplicador = (multiplicador % 2) + 1
-	}
-	var dac = 10 - (soma_campo %10)
-	if dac == 10 {
-		dac = 0
-	}
-	return dac
 
-	$multiplicador = 2;
-          $multiplicacao = 0;
-          $soma_campo = 0;
-
-          for ($i = strlen($campo); $i > 0; $i--) {
-              $multiplicacao = substr($campo, $i-1, 1) * $multiplicador;
-
-              if ($multiplicacao >= 10) {
-                  $multiplicacao = substr($multiplicacao, 0, 1) + substr($multiplicacao, 1, 1);
-              }
-              $soma_campo += $multiplicacao;
-              // valores assumidos: 212121...
-              $multiplicador = ($multiplicador % 2) + 1;
-          }
-          $dac = 10 - ($soma_campo%10);
-          if ($dac == 10)
-              $dac = 0;
-
-          return $dac;
-
-} */
-// $campo = $this->getNumero() . $this->boleto->getMoeda() . $this->boleto->getCarteira() . substr($this->boleto->getNossoNumero(), 0, 2);
-
-/*func (Itau)Campo1 (boleto structs.Boleto) string{
-	return NUMERO + boleto.Moeda + boleto.Carteira + boleto.NossoNumero[0:2]
-}
-*/
 func (itau Itau) FatorVencimento() int {
 	database := ToDate(1997, 10, 7)
-	maturity := ToDate(itau.Boleto.DataVencimento.Ano,itau.Boleto.DataVencimento.Mes , itau.Boleto.DataVencimento.Dia)
+	maturity := ToDate(itau.Boleto.DataVencimento.Ano, itau.Boleto.DataVencimento.Mes, itau.Boleto.DataVencimento.Dia)
 
 	result := maturity.Sub(database).Hours() / 24
-return int(result)
+	return int(result)
 }
 
+func (itau Itau) reverse(s string) string {
+	runes := []rune(s)
+	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+		runes[i], runes[j] = runes[j], runes[i]
+	}
+	return string(runes)
+}
+
+func (itau Itau) Dac(numero int) string {
+	members := strings.Split(itau.dacFirstStep(numero), "")
+	result := 0
+	for i := len(members); i > 0; i-- {
+		par, _ := strconv.Atoi(strings.Join(members[i-1:i], ""))
+		result += par
+	}
+	var mod = (result % 10)
+	var dac = 10 - mod
+	if dac == 10 {
+		return strconv.Itoa(0)
+	}
+	return strconv.Itoa(dac)
+}
+
+func (itau Itau) dacFirstStep(numero int) string {
+	count := len(strconv.Itoa(numero))
+	result := []int{}
+	lista := strings.Split(strconv.Itoa(numero), "")
+	for i := count; i > 0; i-- {
+		var fator int
+		if i%2 != 0 {
+			fator = 2
+		} else {
+			fator = 1
+		}
+		op, _ := strconv.Atoi(strings.Join(lista[i-1:i], ""))
+		result = append(result, op*fator)
+	}
+	r := strings.Trim(strings.Join(strings.Fields(fmt.Sprint(result)), ""), "[]")
+	return itau.reverse(r)
+}
 func ToDate(year, month, day int) time.Time {
 	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
+}
+
+func (itau Itau) Campo1() string {
+	var num = NUMERO
+	var moeda = "9"
+	var carteira = itau.Boleto.Carteira
+	var nn = itau.Boleto.NossoNumero[0:2]
+	var firstNumber = num + moeda + carteira + nn
+	dacNumber, _ := strconv.Atoi(firstNumber)
+	var dac = itau.Dac(dacNumber)
+	return num + moeda + carteira + nn + dac
 }
