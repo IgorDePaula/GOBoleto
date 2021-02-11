@@ -18,4 +18,6 @@ type Boleto struct {
 	Instrucao4 string
 	Instrucao5 string
 	Moeda string
+	Agencia string
+	Conta string
 }
