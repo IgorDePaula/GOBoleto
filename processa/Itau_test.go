@@ -36,3 +36,18 @@ func TestCampo1(t *testing.T) {
 		t.Error("Campo1 nao correspondente: "+campo1)
 	}
 }
+
+func TestCampo2(t *testing.T) {
+	itau := processa.Itau{
+		Boleto: structs.Boleto{
+			NossoNumero: "22345",
+			Carteira:    "109",
+			Agencia: "0541",
+			Conta: "254504",
+		},
+	}
+	campo1 := itau.Campo2()
+	if campo1 != "3419109222" {
+		t.Error("Campo1 nao correspondente: "+campo1)
+	}
+}

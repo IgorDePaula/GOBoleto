@@ -76,3 +76,16 @@ func (itau Itau) Campo1() string {
 	var dac = itau.Dac(dacNumber)
 	return num + moeda + carteira + nn + dac
 }
+func (itau Itau) Campo2() string {
+	var rnn = itau.Boleto.NossoNumero[2:]
+	var agencia = itau.Boleto.Agencia
+	var conta = itau.Boleto.Conta
+	var carteira = itau.Boleto.Carteira
+	var nn = itau.Boleto.NossoNumero
+	var dacArgs, _ = strconv.Atoi(rnn+agencia+conta+carteira+nn)
+	var dac1 = itau.Dac(dacArgs)
+	var agen3 = itau.Boleto.Agencia[0:3]
+	dacArgs, _ = strconv.Atoi(agen3+dac1)
+	var dac = itau.Dac(dacArgs)
+	return dac
+}
